@@ -1,0 +1,73 @@
+
+.ArtistPage_flex {
+    display: flex;
+}
+
+.ArtistPage_artist-info {
+    margin: 50px;
+}
+
+.ArtistPage_artist-image {
+    margin: 20px;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+}
+
+.ArtistPage_artist-name {
+    font-size: 30px;
+    text-align: center;
+}
+
+
+.ArtistPage_popular {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.ArtistPage_popularTracks {
+    margin-bottom: 200px;
+}
+
+.ArtistPage_artist:not(:last-child)::after {
+    content: " & ";
+}
+
+.ArtistPage_table {
+    display: flex;
+    flex-direction: column;
+}
+
+.ArtistPage_table_row {
+    display: flex;
+}
+
+.ArtistPage_table_column {
+    margin: 5px 10px;
+    width: 20%;
+    min-width: 100px;
+}
+
+.ArtistPage_table_columnId {
+    margin: 5px 10px;
+    width: 5%;
+    min-width: 20px;
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.ArtistPage_table_column_albumName {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-style: italic;
+    font-size: 105%;
+}
+
+.ArtistPage_table_column_albumImg {
+    border-radius: 4px;
+}

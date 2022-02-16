@@ -1,0 +1,44 @@
+
+
+.artist-card {
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.artist-card:hover {
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 0px 20px 2px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.2);
+}
+
+.artist-card:active {
+    box-shadow: none;
+}
+
+.artist-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 220px;
+    height: 220px;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.artist-name {
+    margin-top: 17px;
+    font-size: 24px;
+    font-weight: bold;
+    align-self: center;
+    text-decoration: none;
+    color: black;
+    border: none;
+}
+
+.navLink {
+    text-decoration: none;
+}

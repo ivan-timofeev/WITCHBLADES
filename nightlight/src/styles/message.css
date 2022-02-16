@@ -1,0 +1,70 @@
+
+.message {
+    margin-bottom: 10px;
+}
+
+.message-content {
+    display: flex;
+}
+
+.message-right {
+    margin-left: 10px;
+}
+
+.message-author {
+    font-weight: bold;
+}
+
+.message-body {
+    max-width: 700px;
+    word-wrap: wrap;
+}
+
+.author-avatar {
+    border-radius: 50%;
+}
+
+.message-reactions {
+    display: flex;
+    font-size: 0.77em;
+    margin-top: 10px;
+}
+
+.likes-count {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.reaction {
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.1s;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.reaction:hover {
+    transform: scale(1.2);
+}
+
+.reaction:active {
+    transform: scale(1.4);
+}
+
+.error {
+    display: inline-block;
+    color: white;
+    background-color: brown;
+    flex-direction: column;
+    margin: 20px;
+    padding: 10px 20px;
+}
+
+.hidden {
+    display: none;
+}

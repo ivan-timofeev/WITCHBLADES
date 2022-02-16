@@ -1,0 +1,49 @@
+
+.album-card {
+    background-color: white;
+    border-radius: 4px;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.album-card:hover {
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0px 0px 20px 2px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.2);
+}
+
+.album-card:active {
+    box-shadow: none;
+}
+
+.album-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 250px;
+    background-color: black;
+    color: rgb(99, 99, 99);
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.album-name {
+    margin-top: 20px;
+    font-size: 24px;
+    width: 250px;
+    font-weight: bold;
+
+    white-space: nowrap; /* Отменяем перенос текста */
+    overflow: hidden; /* Обрезаем содержимое */
+    text-overflow: ellipsis; /* Многоточие */
+}
+
+.album-author {
+    margin-top: 5px;
+}
+
+.image-placeholder {
+    color: rgb(136, 135, 135);
+}

@@ -1,0 +1,47 @@
+.container {
+    height: 2500px;
+}
+
+.collection-container {
+    padding-top: 20px;
+    padding-left: 50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.collection-item {
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+
+.label2 {
+    margin-left: 65px;
+    padding-bottom: 10px;
+    display: inline-block;
+    border-bottom: solid;
+}
+
+.label {
+    display: inline-block;
+    font-size: 40px;
+    border-bottom: solid;
+    margin-left: 45px;
+    padding: 10px 20px;
+}
+
+.label-container {
+    
+}
+
+.text-shadow {
+    text-shadow: 5px 5px 0 rgb(138, 159, 255);
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    }
+
+body {
+    
+}
