@@ -73,7 +73,7 @@ const ArtistPage = (props) => {
         <div className="ArtistPage_flex">
             <div className="ArtistPage_artist-info">
                 <div className="ArtistPage_artist-image" style={style}></div>
-                <div className="ArtistPage_artist-name">{data.aritst?.artistName}</div>
+                <div className="ArtistPage_artist-name">{data.artist?.artistName}</div>
             </div>
             <div className="ArtistPage_popular">
                 <h1>Популярные треки</h1>
@@ -88,7 +88,6 @@ const ArtistPage = (props) => {
                         </div>
                         {test}
                     </div>
-                    
                 </div>
             </div>
         </div>

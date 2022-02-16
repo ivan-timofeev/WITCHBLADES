@@ -28,6 +28,7 @@ namespace COCAINE.Controllers
         {
             return await _context.Albums
                 .Include(t => t.Artist)
+                .OrderByDescending(t => t.ReleaseDate)
                 .ToListAsync();
         }
 

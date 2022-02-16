@@ -51,7 +51,7 @@ namespace COCAINE.Controllers
         public async Task<ActionResult<TracksOfArtists>> GetTracksOfArtist(int artistId)
         {
             var artist = await _context.Artists
-                .Include(t => t.Albums)
+                .Include(t => t.Albums.OrderByDescending(a => a.ReleaseDate))
                 .Include(t => t.Tracks)
                 .ThenInclude(t => t.TrackArtists)
                 .FirstOrDefaultAsync(t => t.Id == artistId);

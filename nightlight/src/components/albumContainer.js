@@ -26,7 +26,8 @@ export default class AlbumContainer extends Component {
                 <div className="collection-item">
                     <AlbumCard albumName={album.albumName}
                                albumImage={album.albumImage}
-                               albumAuthor={album.artist.artistName}/>
+                               albumAuthor={album.artist.artistName}
+                               releaseDate={album.releaseDate}/>
                 </div>
             );
 
