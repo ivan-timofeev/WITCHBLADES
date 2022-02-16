@@ -73,21 +73,24 @@ namespace COCAINE.Data
             {
                 AlbumName = "мои друзья не должны умирать",
                 AlbumImage = ImagesUrl + "/images/albums/1.png",
-                Artist = aikko
+                Artist = aikko,
+                ReleaseDate = DateTime.Parse("01-01-2020")
             });
 
             context.Albums.Add(new Album()
             {
                 AlbumName = "Тёмные делишки",
                 AlbumImage = ImagesUrl + "/images/albums/2.png",
-                Artist = aikko
+                Artist = aikko,
+                ReleaseDate = DateTime.Parse("01-01-2021")
             });
 
             context.Albums.Add(new Album()
             {
                 AlbumName = "неприязнь",
                 AlbumImage = ImagesUrl + "/images/albums/3.png",
-                Artist = aikko
+                Artist = aikko,
+                ReleaseDate = DateTime.Parse("01-01-2021")
             });
 
             context.Albums.Add(new Album()
@@ -102,7 +105,8 @@ namespace COCAINE.Data
             {
                 AlbumName = "не навсегда",
                 AlbumImage = ImagesUrl + "/images/albums/5.png",
-                Artist = aikko
+                Artist = aikko,
+                ReleaseDate = DateTime.Parse("01-01-2019")
             });
 
             context.SaveChanges();
