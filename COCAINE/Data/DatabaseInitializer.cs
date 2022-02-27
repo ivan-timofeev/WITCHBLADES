@@ -6,7 +6,7 @@ namespace COCAINE.Data
     public class DatabaseInitializer
     {
         // URL Сервиса, который обрабатывает запросы на хранение статичных файлов
-        const string ImagesUrl = "https://localhost:5001";
+        const string StaticFilesHostUrl = "https://localhost:5001";
 
         public void SeedDatabase(DatabaseContext context)
         {
@@ -23,43 +23,43 @@ namespace COCAINE.Data
             context.Artists.Add(new Artist()
             {
                 ArtistName = "Aikko",
-                ArtistImage = ImagesUrl + "/images/artists/1.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/1.png"
             });
 
             context.Artists.Add(new Artist()
             {
                 ArtistName = "pyrokinesis",
-                ArtistImage = ImagesUrl + "/images/artists/2.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/2.png"
             });
 
             context.Artists.Add(new Artist()
             {
                 ArtistName = "twoxseven",
-                ArtistImage = ImagesUrl + "/images/artists/3.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/3.png"
             });
 
             context.Artists.Add(new Artist()
             {
                 ArtistName = "INSPACE",
-                ArtistImage = ImagesUrl + "/images/artists/4.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/4.png"
             });
 
             context.Artists.Add(new Artist()
             {
                 ArtistName = "Katanacss",
-                ArtistImage = ImagesUrl + "/images/artists/5.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/5.png"
             });
 
             context.Artists.Add(new Artist()
             {
                 ArtistName = "Own Maslou",
-                ArtistImage = ImagesUrl + "/images/artists/6.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/6.png"
             });
 
             context.Artists.Add(new Artist()
             {
                 ArtistName = "Uxknow",
-                ArtistImage = ImagesUrl + "/images/artists/7.png"
+                ArtistImage = StaticFilesHostUrl + "/images/artists/7.png"
             });
 
             context.SaveChanges();
@@ -72,7 +72,7 @@ namespace COCAINE.Data
             context.Albums.Add(new Album()
             {
                 AlbumName = "мои друзья не должны умирать",
-                AlbumImage = ImagesUrl + "/images/albums/1.png",
+                AlbumImage = StaticFilesHostUrl + "/images/albums/1.png",
                 Artist = aikko,
                 ReleaseDate = DateTime.Parse("01-01-2020")
             });
@@ -80,7 +80,7 @@ namespace COCAINE.Data
             context.Albums.Add(new Album()
             {
                 AlbumName = "Тёмные делишки",
-                AlbumImage = ImagesUrl + "/images/albums/2.png",
+                AlbumImage = StaticFilesHostUrl + "/images/albums/2.png",
                 Artist = aikko,
                 ReleaseDate = DateTime.Parse("01-01-2021")
             });
@@ -88,7 +88,7 @@ namespace COCAINE.Data
             context.Albums.Add(new Album()
             {
                 AlbumName = "неприязнь",
-                AlbumImage = ImagesUrl + "/images/albums/3.png",
+                AlbumImage = StaticFilesHostUrl + "/images/albums/3.png",
                 Artist = aikko,
                 ReleaseDate = DateTime.Parse("01-01-2021")
             });
@@ -96,7 +96,7 @@ namespace COCAINE.Data
             context.Albums.Add(new Album()
             {
                 AlbumName = "фикционализм",
-                AlbumImage = ImagesUrl + "/images/albums/4.png",
+                AlbumImage = StaticFilesHostUrl + "/images/albums/4.png",
                 Artist = aikko,
                 ReleaseDate = DateTime.Parse("01-01-2018")
             });
@@ -104,7 +104,7 @@ namespace COCAINE.Data
             context.Albums.Add(new Album()
             {
                 AlbumName = "не навсегда",
-                AlbumImage = ImagesUrl + "/images/albums/5.png",
+                AlbumImage = StaticFilesHostUrl + "/images/albums/5.png",
                 Artist = aikko,
                 ReleaseDate = DateTime.Parse("01-01-2019")
             });
@@ -427,7 +427,8 @@ namespace COCAINE.Data
                     TrackName = "мои друзья не должны умирать",
                     Duration = "2:16",
                     TrackAlbum = album,
-                    TrackArtists = new List<Artist>() { aikko }
+                    TrackArtists = new List<Artist>() { aikko },
+                    TrackUrl = StaticFilesHostUrl + "/music/15.mp3"
                 });
             }
 

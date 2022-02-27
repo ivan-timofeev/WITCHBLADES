@@ -9,5 +9,6 @@
         public Album?        TrackAlbum     { get; set; }
         public int?          InAlbumNumber  { get; set; }
         public string?       Duration       { get; set; }
+        public string?       TrackUrl       { get; set; }
     }
 }
