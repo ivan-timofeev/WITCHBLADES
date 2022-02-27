@@ -79,6 +79,17 @@ input[type='range'] {
     filter: brightness(0) invert(1);
 }
 
+.click-center {
+    margin: 0px 10px;
+}
+
+.click:hover {
+    filter: invert(1) brightness(0.5)
+}
+
+.rewind {
+    transform: rotate(180deg);
+}
 
 input[type='range'] {
     height: 8px;

@@ -72,7 +72,9 @@ const Player = () => {
                         </div>
                     </div>
                     <div className="audio-player-buttons">
-                        <img width="40px" className="click" src={buttonImg} onClick={onPlayPause}></img>
+                        <img width="33px" className="click" src="https://localhost:5001/images/rewind.svg"></img>
+                        <img width="40px" className="click click-center" src={buttonImg} onClick={onPlayPause}></img>
+                        <img width="33px" className="click rewind" src="https://localhost:5001/images/rewind.svg"></img>
                     </div>
                 </div>
                 <div className="audio-player-right">
