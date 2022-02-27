@@ -62,7 +62,7 @@ const Player = () => {
         : "https://localhost:5001/images/play-button.png";
 
       return (
-        <div>
+        <div className="audio-player-container">
             <div className="audio-player">
                 <div className="audio-player-left">
                     <div className="audio-player-sound">
@@ -92,7 +92,6 @@ const Player = () => {
                 </div>
             </div>
         </div>
-		
 	);
 }
 

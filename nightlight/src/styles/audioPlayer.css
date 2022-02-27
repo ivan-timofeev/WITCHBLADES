@@ -1,11 +1,28 @@
 
+.audio-player-container {
+    transition: 0.2s;
+    bottom:0;
+    position: fixed;
+    left: 50%; /* Negative half of height. */
+    margin-left: -250px; /* Negative half of width. */
+    
+    transform: translateY(80px);
+}
+
+.audio-player-container:hover {
+    transform: translateY(0px);
+}
+
 .audio-player {
-    margin: 100px;
-    padding: 15px;
-    border-radius: 5px;
-    display: inline-flex;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+    display: flex;
     background-color: #181818;
     color: white;
+}
+
+.audio-player:hover {
+    height: auto;
 }
 
 input[type='range'] {
