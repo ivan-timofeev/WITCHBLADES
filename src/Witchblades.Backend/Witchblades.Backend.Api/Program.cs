@@ -5,6 +5,7 @@ using Witchblades.Backend.Api.Configuration;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Witchblades.Backend.Api.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddAutoMapper(typeof(AutoMappingProfile));
-
-// commit test
+builder.Services.AddScoped<IPagedModelFactory, PagedModelFactory>();
 
 
 var app = builder.Build();

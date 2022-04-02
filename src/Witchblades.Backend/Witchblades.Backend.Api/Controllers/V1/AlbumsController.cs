@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Witchblades.Backend.Api.DataContracts.ViewModels;
+using Witchblades.Backend.Api.Utils;
 using Witchblades.Backend.Data;
 
 namespace Witchblades.Backend.Controllers.V1
@@ -14,40 +15,47 @@ namespace Witchblades.Backend.Controllers.V1
         #region Private fields
         private readonly WitchbladesContext _context;
         private readonly IMapper _mapper;
+        private readonly IPagedModelFactory _pagedModelFactory;
         #endregion
 
         #region Constructors
         public AlbumsController(
             WitchbladesContext context,
-            IMapper mapper)
+            IMapper mapper,
+            IPagedModelFactory pagedModelFactory)
         {
             _context = context;
             _mapper = mapper;
+            _pagedModelFactory = pagedModelFactory;
         }
         #endregion
 
 
-        #region GET: api/Albums
+        #region GET: api/Albums  (with pagination)
         /// <summary>
         /// Returns all albums
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Album>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedModel<Album>))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get([FromQuery] PaginationParameters options)
         {
-            var albums = await _context.Albums
+            // IOrderedQueryable
+            var query = _context.Albums
                 .Include(t => t.Artist)
-                .OrderByDescending(t => t.ReleaseDate)
-                .Select(t => _mapper.Map<Album>(t))
-                .ToListAsync();
+                .Include(t => t.Tracks)
+                .Include("Tracks.TrackArtists")
+                .AsNoTracking()
+                .OrderByDescending(t => t.ReleaseDate);
 
-            if (albums is null || albums.Count == 0)
+            var pagedModel = await _pagedModelFactory.CreatePagedModelAsync<Models.Album, Album>(options, query);
+
+            if (pagedModel.PageElemensCount == 0)
             {
                 return NoContent();
             }
 
-            return Ok(albums);
+            return Ok(pagedModel);
         }
         #endregion
 
@@ -77,6 +85,12 @@ namespace Witchblades.Backend.Controllers.V1
         #endregion
 
         #region PUT: api/Albums/{id}
+        /// <summary>
+        /// Updates the Albums. Null fields will be not updated
+        /// </summary>
+        /// <param name="id">Album GUID</param>
+        /// <returns></returns>
+        /// <response code="424">Failed Dependency Error</response>
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Album))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
