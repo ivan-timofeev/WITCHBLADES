@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddAutoMapper(typeof(AutoMappingProfile));
 
-
+// commit test
 
 
 var app = builder.Build();
