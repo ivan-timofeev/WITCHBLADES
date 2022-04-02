@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Witchblades.Backend.Api.DataContracts.ViewModels;
@@ -72,12 +67,13 @@ namespace Witchblades.Backend.Controllers.V1
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Artist))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
         public async Task<ActionResult> GetArtist(Guid id)
         {
             var artist = await _context.Artists
                 .Include(t => t.MusicLabel)
                 .Include(t => t.Albums)
-                .AsNoTracking()
+                .Include("Tracks.TrackArtists")
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             if (artist is null)
@@ -90,10 +86,66 @@ namespace Witchblades.Backend.Controllers.V1
         #endregion
 
         #region PUT: api/Artists/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArtist(int id, Artist artist)
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PutArtist(Guid id, ArtistUpdate newState)
         {
-            throw new NotImplementedException();
+            var model = await _context.Artists
+                .Include(t => t.Albums)
+                .Include(t => t.MusicLabel)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (model is null)
+            {
+                return NotFound();
+            }
+
+            if (newState.ArtistName != null)
+                model.ArtistName = newState.ArtistName;
+            if (newState.ArtistImage != null)
+                model.ArtistImage = newState.ArtistImage;
+
+            if (newState.MusicLabel != null)
+            {
+                var musicLabel = await _context.Labels.FirstOrDefaultAsync(t => t.Id == newState.MusicLabel);
+
+                if (musicLabel is null)
+                {
+                    return Problem($"MusicLabel with id '{newState.MusicLabel}' not found",
+                        "MusicLabel", 424, "Failed dependency error", "MusicLabel");
+                }
+                else
+                {
+                    model.MusicLabel = musicLabel;
+                }
+            }
+
+            if (newState.Albums != null)
+            {
+                var albums = new List<Models.Album>(newState.Albums.Count());
+
+                foreach (var albumId in newState.Albums)
+                {
+                    var album = await _context.Albums.FirstOrDefaultAsync(t => t.Id == albumId);
+
+                    if (album is null)
+                    {
+                        return Problem($"Album with id '{newState.MusicLabel}' not found",
+                            "Album", 424, "Failed dependency error", "Album");
+                    }
+                    else
+                    {
+                        albums.Add(album);
+                    }
+                }
+
+                model.Albums = albums;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Accepted(_mapper.Map<Artist>(model));
         }
         #endregion
 
