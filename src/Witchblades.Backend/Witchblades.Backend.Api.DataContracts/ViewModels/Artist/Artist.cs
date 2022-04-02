@@ -10,7 +10,7 @@ namespace Witchblades.Backend.Api.DataContracts.ViewModels
     {
         public Guid Id { get; set; }
         public string ArtistName { get; set; } = default!;
-        //public MusicLabel? MusicLabel { get; set; }
+        public MusicLabelCard? MusicLabel { get; set; }
         public IEnumerable<Track>? Tracks { get; set; }
         public IEnumerable<Album>? Albums { get; set; }
         public string? ArtistImage { get; set; }

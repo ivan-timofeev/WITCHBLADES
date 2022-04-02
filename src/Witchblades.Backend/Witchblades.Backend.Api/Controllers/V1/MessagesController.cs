@@ -5,7 +5,7 @@
 //using Microsoft.AspNetCore.Mvc;
 //using System.Linq;
 //
-//namespace Witchblades.Backend.Controllers
+//namespace Witchblades.Backend.Controllers.V1
 //{
 //    [Route("api/[controller]")]
 //    [ApiController]

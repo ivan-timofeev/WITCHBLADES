@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Witchblades.Backend.Data;
 using Witchblades.Backend.Api.Configuration;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,20 +16,41 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Add api versioning
+builder.Services.AddApiVersioning(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddAutoMapper(typeof(AutoMappingProfile));
+
+
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Configurating swagger
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    using (var scope = app.Services.CreateScope())
+    {
+        var apiProvider = scope.ServiceProvider.GetService<IApiVersionDescriptionProvider>();
+
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            foreach (var description in apiProvider.ApiVersionDescriptions)
+            {
+                options.SwaggerEndpoint(
+                    $"/swagger/{description.GroupName}/swagger.json",
+                    description.GroupName.ToUpperInvariant());
+            }
+        });
+    }
 }
+
 // Seeding the database
 using (var scope = app.Services.CreateScope())
 {

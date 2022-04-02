@@ -4,7 +4,7 @@ using Witchblades.Backend.Api;
 using Witchblades.Backend.Data;
 using Witchblades.Backend.Models;
 
-namespace Witchblades.Backend.Controllers
+namespace Witchblades.Backend.Controllers.V1
 {
     //[Route("api/[controller]")]
     //[ApiController]
