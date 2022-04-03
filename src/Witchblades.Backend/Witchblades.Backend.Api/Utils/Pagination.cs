@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +8,10 @@ namespace Witchblades.Backend.Api.Utils
 {
     public class PaginationParameters
     {
-        public int Limit { get; init; }
-        public int PageNumber { get; init; }
+        [Range(1, 100)]
+        public int Limit { get; set; } = 10;
+        [Range(1, 50000)]
+        public int PageNumber { get; set; } = 1;
     }
 
     public class PagedModel<T>
