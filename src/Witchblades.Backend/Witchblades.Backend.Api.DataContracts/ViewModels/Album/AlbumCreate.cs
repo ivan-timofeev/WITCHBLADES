@@ -8,7 +8,7 @@ namespace Witchblades.Backend.Api.DataContracts.ViewModels
         public string? AlbumName { get; set; }
         [Required]
         public Guid? Artist { get; set; }
-        public IEnumerable<Guid>? Tracks { get; set; }
+        public IEnumerable<TrackCreateWithAlbum>? Tracks { get; set; }
         [Required]
         public DateTime ReleaseDate { get; set; }
         public string? AlbumImage { get; set; }

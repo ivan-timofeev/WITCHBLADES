@@ -178,7 +178,7 @@ namespace Witchblades.Backend.Controllers.V1
 
             // Creating a new album
 
-            // Check artist
+            // Check main artist
             {
                 var artist = await _context.Artists.FirstOrDefaultAsync(t => t.Id == album.Artist);
 
@@ -193,28 +193,49 @@ namespace Witchblades.Backend.Controllers.V1
                 }
             }
 
-            // Check tracks
+            // Creating tracks
             {
                 if (album.Tracks != null && album.Tracks.Any())
                 {
-                    var tracks = new List<Models.Track>(album.Tracks.Count());
+                    var newTracks = new List<Models.Track>(album.Tracks.Count());
 
-                    foreach (var trackId in album.Tracks)
+                    foreach (var track in album.Tracks)
                     {
-                        var found = await _context.Tracks.FirstOrDefaultAsync(t => t.Id == trackId);
+                        var trackArtists = new List<Models.Artist>();
+                        trackArtists.Add(newAlbum.Artist);
 
-                        if (found is null)
+                        // Check collabaration
+                        if (track.Collaboration != null && track.Collaboration.Any())
                         {
-                            return Problem($"Track with id '{trackId}' not found",
-                                "Artist", 424, "Failed dependency error", "Artist");
+                            foreach (Guid artistId in track.Collaboration)
+                            {
+                                var collaborationArtist = await _context.Artists
+                                    .FirstOrDefaultAsync(t => t.Id == artistId);
+
+                                if (collaborationArtist is null)
+                                {
+                                    return Problem($"Collabaration artist with id '{album.Artist}' not found",
+                                        "Artist", 424, "Failed dependency error", "Artist");
+                                }
+
+                                trackArtists.Add(collaborationArtist);
+                            }
                         }
-                        else
+
+                        var newTrack = new Models.Track()
                         {
-                            tracks.Add(found);
-                        }
+                            TrackName = track.TrackName,
+                            InAlbumNumber = track.InAlbumNumber,
+                            Duration = track.Duration,
+                            Lyrics = track.Lyrics,
+                            TrackUrl = track.TrackUrl,
+                            TrackArtists = trackArtists
+                        };
+
+                        newTracks.Add(newTrack);
                     }
 
-                    newAlbum.Tracks = tracks;
+                    newAlbum.Tracks = newTracks;
                 }
             }
 
@@ -231,7 +252,7 @@ namespace Witchblades.Backend.Controllers.V1
         }
         #endregion
 
-        #region DELETE: api/Albums/5
+        #region DELETE: api/Albums/{id}
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Album))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]

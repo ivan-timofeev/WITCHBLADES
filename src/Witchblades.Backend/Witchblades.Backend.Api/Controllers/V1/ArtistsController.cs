@@ -218,7 +218,7 @@ namespace Witchblades.Backend.Controllers.V1
         }
         #endregion
 
-        #region DELETE: api/Artists/5
+        #region DELETE: api/Artists/{id}
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]

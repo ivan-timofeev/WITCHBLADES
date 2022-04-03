@@ -14,17 +14,13 @@ namespace Witchblades.Backend.Api.Configuration
 
 
 			CreateMap<Models.Track, DataContracts.ViewModels.AlbumTrack>()
-				.ForMember(src => src.Colloboration, opt => opt.MapFrom(t => t.TrackArtists))
+				.ForMember(src => src.Collaboration, opt => opt.MapFrom(t => t.TrackArtists))
 				.AfterMap((src, dest) =>
                 {
-					var trackOwner = dest.Colloboration
-						.FirstOrDefault(
-							t => t.ArtistName == src.TrackAlbum.Artist.ArtistName);
+					var list = dest.Collaboration.ToList();
+					list.RemoveAt(0);
 
-					dest.Colloboration = dest.Colloboration.Where(artist => artist != trackOwner);
-
-					if (dest.Colloboration.Count() == 0)
-						dest.Colloboration = null;
+					dest.Collaboration = list.Count > 0 ? list : null;
                 });
 		}
 	}
