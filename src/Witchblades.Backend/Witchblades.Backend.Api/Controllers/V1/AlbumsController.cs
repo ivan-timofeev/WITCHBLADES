@@ -31,9 +31,9 @@ namespace Witchblades.Backend.Controllers.V1
         #endregion
 
 
-        #region GET: api/Albums  (with pagination)
+        #region GET: api/Albums (with pagination)
         /// <summary>
-        /// Returns all albums
+        /// Returns all albums with pagination
         /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedModel<Album>))]

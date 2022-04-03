@@ -30,7 +30,8 @@ namespace Witchblades.Backend.Controllers.V1
         }
         #endregion
 
-        #region GET: api/Artists
+
+        #region GET: api/Artists (with pagination)
         /// <summary>
         /// Get artists with pagination
         /// </summary>
@@ -38,6 +39,7 @@ namespace Witchblades.Backend.Controllers.V1
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedModel<Artist>))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<ActionResult> GetArtists([FromQuery] PaginationParameters options)
         {
             // IOrderedQueryable
@@ -66,6 +68,7 @@ namespace Witchblades.Backend.Controllers.V1
         /// <param name="id">Artist GUID</param>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
         public async Task<ActionResult> GetArtist(Guid id)
@@ -74,6 +77,7 @@ namespace Witchblades.Backend.Controllers.V1
                 .Include(t => t.MusicLabel)
                 .Include(t => t.Albums)
                 .Include("Tracks.TrackArtists")
+            //  .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             if (artist is null)
@@ -86,8 +90,13 @@ namespace Witchblades.Backend.Controllers.V1
         #endregion
 
         #region PUT: api/Artists/5
+        /// <summary>
+        /// Updates the artist (null fields will be not updated)
+        /// </summary>
+        /// <param name="id">Artist GUID</param>
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutArtist(Guid id, ArtistUpdate newState)
         {
@@ -150,18 +159,83 @@ namespace Witchblades.Backend.Controllers.V1
         #endregion
 
         #region POST: api/Artists
+        /// <summary>
+        /// Creates an artist
+        /// </summary>
+        /// <response code="424">Failed Dependency Error</response>
         [HttpPost]
-        public async Task<ActionResult<Artist>> PostArtist(Artist artist)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
+        public async Task<ActionResult<Artist>> PostArtist(ArtistCreate artist)
         {
-            throw new NotImplementedException();
+            var newArtist = new Models.Artist
+            {
+                ArtistName = artist.ArtistName,
+                ArtistImage = artist.ArtistImage
+            };
+
+            if (newArtist.MusicLabel != null)
+            {
+                var musicLabel = await _context.Labels.FirstOrDefaultAsync(t => t.Id == artist.MusicLabelId);
+
+                if (musicLabel is null)
+                {
+                    return Problem($"MusicLabel with id '{newArtist.MusicLabel}' not found",
+                            "MusicLabel", 424, "Failed dependency error", "MusicLabel");
+                }
+                else
+                {
+                    newArtist.MusicLabel = musicLabel;
+                }
+            }
+
+            if (artist.Albums != null && artist.Albums.Count() > 0)
+            {
+                var albums = new List<Models.Album>(artist.Albums.Count());
+
+                foreach (var albumId in artist.Albums)
+                {
+                    var album = await _context.Albums.FirstOrDefaultAsync(t => t.Id == albumId);
+
+                    if (album is null)
+                    {
+                        return Problem($"Album with id '{newArtist.MusicLabel}' not found",
+                            "Album", 424, "Failed dependency error", "Album");
+                    }
+                    else
+                    {
+                        albums.Add(album);
+                    }
+                }
+
+                newArtist.Albums = albums;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", _mapper.Map<Artist>(newArtist));
         }
         #endregion
 
         #region DELETE: api/Artists/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArtist(int id)
+        [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> DeleteArtist(Guid id)
         {
-            throw new NotImplementedException();
+            var artist = await _context.Artists.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (artist is null)
+            {
+                return NotFound();
+            }
+
+            _context.Artists.Remove(artist);
+            await _context.SaveChangesAsync();
+
+            return Accepted();
         }
         #endregion
     }
