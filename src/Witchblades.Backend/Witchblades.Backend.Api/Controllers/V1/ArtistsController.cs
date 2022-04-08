@@ -68,7 +68,6 @@ namespace Witchblades.Backend.Controllers.V1
         /// <param name="id">Artist GUID</param>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Artist))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
         public async Task<ActionResult> GetArtist(Guid id)
@@ -94,10 +93,12 @@ namespace Witchblades.Backend.Controllers.V1
         /// Updates the artist (null fields will be not updated)
         /// </summary>
         /// <param name="id">Artist GUID</param>
+        /// <response code="424">Failed Dependency Error</response>
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> PutArtist(Guid id, ArtistUpdate newState)
         {
             var model = await _context.Artists
@@ -162,6 +163,7 @@ namespace Witchblades.Backend.Controllers.V1
         /// <summary>
         /// Creates an artist
         /// </summary>
+        /// <param name="id">Artist GUID</param>
         /// <response code="424">Failed Dependency Error</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Artist))]

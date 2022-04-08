@@ -5,7 +5,7 @@
         public Guid Id { get; set; }
         public string TrackName { get; set; } = default!;
         public string? Lyrics { get; set; }
-        public IEnumerable<ArtistCard> TrackArtists { get; set; } = default!;
+        public IEnumerable<ArtistCard>? Collaboration { get; set; }
         public AlbumCard TrackAlbum { get; set; } = default!;
         public int InAlbumNumber { get; set; }
         public string? Duration { get; set; }

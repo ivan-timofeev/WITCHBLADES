@@ -1,185 +1,155 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Witchblades.Backend.Api;
+using Witchblades.Backend.Api.DataContracts.ViewModels;
+using Witchblades.Backend.Api.Utils;
 using Witchblades.Backend.Data;
-using Witchblades.Backend.Models;
 
 namespace Witchblades.Backend.Controllers.V1
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-    //public class TracksController : ControllerBase
-    //{
-    //    private readonly WitchbladesContext _context;
-    //
-    //    public TracksController(WitchbladesContext context)
-    //    {
-    //        _context = context;
-    //    }
-    //
-    //    // GET: api/Tracks/{Page}
-    //    [HttpGet]
-    //    public ActionResult Get([FromQuery] string filter)
-    //    {
-    //        // Select data from database
-    //        var tracks = _context.Tracks
-    //            .Include(t => t.TrackArtists)
-    //            .Include(t => t.TrackAlbum)
-    //            .AsNoTracking();
-    //
-    //        // Return results
-    //        return Ok();
-    //    }
-    //
-    //    // GET: api/Tracks/{id}
-    //    [HttpGet("{id}")]
-    //    public async Task<ActionResult<Track>> Get(int id)
-    //    {
-    //        var track = await _context.Tracks
-    //            .Include(t => t.TrackArtists)
-    //            .FirstOrDefaultAsync(t => t.Id == id);
-    //
-    //        if (track == null)
-    //        {
-    //            return NotFound();
-    //        }
-    //
-    //        track.TrackArtists.ForEach(t => t.Tracks = null);
-    //
-    //        return track;
-    //    }
-    //
-    //    [Route("GetByArtist/{artistId}")]
-    //    [HttpGet]
-    //    public async Task<ActionResult<ArtistTracks>> GetByArtist(int artistId)
-    //    {
-    //        var artist = await _context.Artists
-    //            .Include(t => t.Albums.OrderByDescending(a => a.ReleaseDate))
-    //            .Include(t => t.Tracks)
-    //            .ThenInclude(t => t.TrackArtists)
-    //            .AsNoTracking()
-    //            .FirstOrDefaultAsync(t => t.Id == artistId);
-    //
-    //        if (artist is null)
-    //        {
-    //            return NotFound();
-    //        }
-    //
-    //        var result = new ArtistTracks()
-    //        {
-    //            Artist = artist,
-    //            Albums = artist.Albums
-    //        };
-    //
-    //        // Removing a redundant data
-    //        result.Artist.Tracks = null;
-    //        result.Artist.Albums = null;
-    //        result.Albums.ForEach(album =>
-    //        {
-    //            album.Artist = null;
-    //
-    //            if (album.Tracks is null)
-    //            {
-    //                album.Tracks = new List<Track>();
-    //            }
-    //        });
-    //
-    //        return result;
-    //    }
-    //
-    //    // PUT: api/Tracks/5
-    //    [HttpPut("{id}")]
-    //    public async Task<IActionResult> Put(int id, Track track)
-    //    {
-    //        if (id != track.Id)
-    //        {
-    //            return BadRequest();
-    //        }
-    //
-    //        _context.Entry(track).State = EntityState.Modified;
-    //
-    //        try
-    //        {
-    //            await _context.SaveChangesAsync();
-    //        }
-    //        catch (DbUpdateConcurrencyException)
-    //        {
-    //            if (!TrackExists(id))
-    //            {
-    //                return NotFound();
-    //            }
-    //            else
-    //            {
-    //                throw;
-    //            }
-    //        }
-    //
-    //        return NoContent();
-    //    }
-    //
-    //    // POST: api/Tracks
-    //    [HttpPost]
-    //    public async Task<ActionResult<Track>> Post([FromBody] CreateTrack model)
-    //    {
-    //        var artists = new List<Artist>();
-    //        var album = await _context.Albums.FindAsync(model.AlbumId);
-    //
-    //        // Album specified but not found
-    //        if (model.AlbumId is not null && album is null)
-    //        {
-    //            return NotFound($"Album specified but not found. (Album id is {model.AlbumId})");
-    //        }
-    //
-    //        foreach (int artistId in model.ArtistsIds)
-    //        {
-    //            var artist = await _context.Artists.FirstOrDefaultAsync(t => t.Id == artistId);
-    //
-    //            if (artist is null)
-    //            {
-    //                return NotFound($"Artist with id {artistId} not found");
-    //            }
-    //
-    //            artists.Add(artist);
-    //        }
-    //
-    //        // Create new track object
-    //        var track = new Track()
-    //        {
-    //            TrackName = model.NewTrackName,
-    //            Lyrics = model.NewTrackLyrics,
-    //            TrackAlbum = album,
-    //            TrackArtists = artists
-    //        };
-    //
-    //        // Save track into the database
-    //        _context.Tracks.Add(track);
-    //        await _context.SaveChangesAsync();
-    //
-    //        // Remove shitty data
-    //        track.TrackArtists.ForEach(artist => artist.Tracks = null);
-    //
-    //        return track;
-    //    }
-    //
-    //    // DELETE: api/Tracks/5
-    //    [HttpDelete("{id}")]
-    //    public async Task<IActionResult> Delete(int id)
-    //    {
-    //        var track = await _context.Tracks.FindAsync(id);
-    //        if (track == null)
-    //        {
-    //            return NotFound();
-    //        }
-    //
-    //        _context.Tracks.Remove(track);
-    //        await _context.SaveChangesAsync();
-    //
-    //        return NoContent();
-    //    }
-    //
-    //    private bool TrackExists(int id)
-    //    {
-    //        return _context.Tracks.Any(e => e.Id == id);
-    //    }
-    //}
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class TracksController : ControllerBase
+    {
+        #region Private fields
+        private readonly WitchbladesContext _context;
+        private readonly IMapper _mapper;
+        private readonly IPagedModelFactory _pagedModelFactory;
+        #endregion
+
+        #region Constructors
+        public TracksController(
+            WitchbladesContext context,
+            IMapper mapper,
+            IPagedModelFactory pagedModelFactory)
+        {
+            _context = context;
+            _mapper = mapper;
+            _pagedModelFactory = pagedModelFactory;
+        }
+        #endregion
+
+
+        #region GET: api/Tracks/{id}
+        /// <summary>
+        /// Returns the track
+        /// </summary>
+        /// <param name="id">Track GUID</param>
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Get(Guid id)
+        {
+            var track = await _context.Tracks
+                .Include(t => t.TrackArtists)
+                .Include(t => t.TrackAlbum)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (track is null)
+            {
+                return NotFound();
+            }
+
+            // Return results
+            return Ok(_mapper.Map<Track>(track));
+        }
+        #endregion
+
+        #region PUT: api/Tracks/{id}
+        /// <summary>
+        /// Updates the track (null fields will be not updated)
+        /// </summary>
+        /// <param name="id">Track GUID</param>
+        /// <response code="424">Failed Dependency Error</response>
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
+        public async Task<ActionResult> Put(Guid id, TrackUpdate newState)
+        {
+            var track = await _context.Tracks
+                .Include(t => t.TrackArtists)
+                .Include(t => t.TrackAlbum)
+                .ThenInclude(t => t.Artist)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (track is null)
+            {
+                return NotFound();
+            }
+
+            if (newState.TrackName != null)
+                track.TrackName = newState.TrackName;
+            if (newState.Duration != null)
+                track.Duration = newState.Duration;
+            if (newState.TrackUrl != null)
+                track.TrackUrl = newState.TrackUrl;
+            if (newState.InAlbumNumber != null)
+                track.InAlbumNumber = newState.InAlbumNumber.Value;
+            if (newState.Lyrics != null)
+                track.Lyrics = newState.Lyrics;
+
+            if (newState.Album != null)
+            {
+                var album = await _context.Albums.FirstOrDefaultAsync(t => t.Id == newState.Album);
+
+                if (album is null)
+                {
+                    return Problem($"Album with id '{newState.Album}' not found",
+                        "Album", 424, "Failed dependency error", "Album");
+                }
+                else
+                {
+                    track.TrackAlbum = album;
+                }
+            }
+
+            if (newState.Artist != null)
+            {
+                var artist = await _context.Artists.FirstOrDefaultAsync(t => t.Id == newState.Artist);
+
+                if (artist is null)
+                {
+                    return Problem($"Artist with id '{newState.Artist}' not found",
+                        "Artist", 424, "Failed dependency error", "Artist");
+                }
+                else
+                {
+                    track.TrackArtists.Clear();
+                    track.TrackArtists.Add(artist);
+                }
+            }
+
+            if (newState.Collaboration != null)
+            {
+                var owner = track.TrackAlbum.Artist;
+                track.TrackArtists = new List<Models.Artist>(newState.Collaboration.Count() + 1);
+                track.TrackArtists.Add(owner);
+
+                foreach (var artistId in newState.Collaboration)
+                {
+                    var artist = await _context.Artists.FirstOrDefaultAsync(t => t.Id == artistId);
+
+                    if (artist is null)
+                    {
+                        return Problem($"Collaboration artist with id '{artistId}' not found",
+                            "Artist", 424, "Failed dependency error", "Artist");
+                    }
+                    else
+                    {
+                        track.TrackArtists.Add(artist);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Accepted(_mapper.Map<Track>(track));
+        }
+        #endregion
+    }
 }

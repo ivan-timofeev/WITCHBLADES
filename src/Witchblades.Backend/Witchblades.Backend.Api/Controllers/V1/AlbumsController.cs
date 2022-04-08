@@ -38,6 +38,7 @@ namespace Witchblades.Backend.Controllers.V1
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedModel<Album>))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<ActionResult> Get([FromQuery] PaginationParameters options)
         {
             // IOrderedQueryable
