@@ -38,7 +38,7 @@ namespace Witchblades.Backend.Controllers.V1
         /// </summary>
         /// <param name="id">Track GUID</param>
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Track))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Get(Guid id)
         {
@@ -65,7 +65,7 @@ namespace Witchblades.Backend.Controllers.V1
         /// <param name="id">Track GUID</param>
         /// <response code="424">Failed Dependency Error</response>
         [HttpPut("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Artist))]
+        [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(Track))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
@@ -149,6 +149,74 @@ namespace Witchblades.Backend.Controllers.V1
             await _context.SaveChangesAsync();
 
             return Accepted(_mapper.Map<Track>(track));
+        }
+        #endregion
+
+        #region POST: api/Tracks
+        /// <summary>
+        /// Creates a track
+        /// </summary>
+        /// <param name="id">Track GUID</param>
+        /// <response code="424">Failed Dependency Error</response>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Track))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status424FailedDependency, Type = typeof(ProblemDetails))]
+        public async Task<ActionResult> Post(TrackCreate track)
+        {
+            // Это дерьмо не работает
+            var newTrack = new Models.Track
+            {
+                TrackArtists = new List<Models.Artist>(),
+                InAlbumNumber = track.InAlbumNumber,
+                Duration = track.Duration,
+                Lyrics = track.Lyrics,
+                TrackUrl = track.TrackUrl
+            };
+
+            var album = await _context.Albums.FirstOrDefaultAsync(t => t.Id == track.Album);
+
+            if (album is null)
+            {
+                return Problem($"Album with id '{track.Album}' not found",
+                        "Album", 424, "Failed dependency error", "Album");
+            }
+            else
+            {
+                newTrack.TrackArtists.Add(album.Artist);
+                album.Tracks.Add(newTrack);
+            }
+
+            if (track.Collaboration != null)
+            {
+                throw new NotImplementedException();
+            }
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("Get", _mapper.Map<Track>(newTrack));
+
+            //if (track.Collaboration != null)
+            //{
+            //    var owner = newTrack.TrackAlbum.Artist;
+            //    newTrack.TrackArtists = new List<Models.Artist>(track.Collaboration.Count() + 1);
+            //    newTrack.TrackArtists.Add(owner);
+            //
+            //    foreach (var artistId in track.Collaboration)
+            //    {
+            //        var artist = await _context.Artists.FirstOrDefaultAsync(t => t.Id == artistId);
+            //
+            //        if (artist is null)
+            //        {
+            //            return Problem($"Collaboration artist with id '{artistId}' not found",
+            //                "Artist", 424, "Failed dependency error", "Artist");
+            //        }
+            //        else
+            //        {
+            //            newTrack.TrackArtists.Add(artist);
+            //        }
+            //    }
+            //}
         }
         #endregion
     }
