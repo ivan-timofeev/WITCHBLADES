@@ -181,11 +181,11 @@ namespace Witchblades.Backend.Controllers.V1
                 return Problem($"Album with id '{track.Album}' not found",
                         "Album", 424, "Failed dependency error", "Album");
             }
-            else
-            {
-                newTrack.TrackArtists.Add(album.Artist);
-                album.Tracks.Add(newTrack);
-            }
+
+            newTrack.TrackArtists.Add(album.Artist);
+            newTrack.TrackAlbum = album;
+            _context.Tracks.Add(newTrack);
+            album.Tracks.Add(newTrack);
 
             if (track.Collaboration != null)
             {
@@ -194,7 +194,7 @@ namespace Witchblades.Backend.Controllers.V1
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("Get", _mapper.Map<Track>(newTrack));
+            return Ok(_mapper.Map<Track>(newTrack));
 
             //if (track.Collaboration != null)
             //{
