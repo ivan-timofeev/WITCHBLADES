@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration;
 using Witchblades.Backend.Api.Utils;
 using Witchblades.Backend.Data;
 
@@ -32,6 +32,8 @@ namespace Witchblades.Backend.Api.Configuration
             services.ConfigureSqlDbContext(_configuration);
             services.AddAutoMapper(typeof(AutoMappingProfile));
             services.AddScoped<IPagedModelFactory, PagedModelFactory>();
+
+            services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
         }
 
         // Middlewares
@@ -42,31 +44,11 @@ namespace Witchblades.Backend.Api.Configuration
             // Configurating swagger
             if (env.IsDevelopment())
             {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var apiProvider = scope.ServiceProvider.GetService<IApiVersionDescriptionProvider>();
-
-                    app.UseSwagger();
-                    app.UseSwaggerUI(options =>
-                    {
-                        foreach (var description in apiProvider.ApiVersionDescriptions)
-                        {
-                            options.SwaggerEndpoint(
-                                $"/swagger/{description.GroupName}/swagger.json",
-                                description.GroupName.ToUpperInvariant());
-                        }
-                    });
-                }
+                app.UseDevelopmentTimeFeatures();
             }
 
-            // Seeding the database
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetService<WitchbladesContext>();
-
-                context.Database.EnsureCreated();
-                new DatabaseInitializer().SeedDatabase(context);
-            }
+            // Database preparing
+            app.PrepareTheDatabaseContext();
 
             app.UseCors(t => t.AllowAnyHeader()
                               .AllowAnyMethod()

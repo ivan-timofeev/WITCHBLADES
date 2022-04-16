@@ -3,7 +3,12 @@ using Witchblades.Backend.Models;
 
 namespace Witchblades.Backend.Data
 {
-    public class DatabaseInitializer
+    public interface IDatabaseInitializer
+    {
+        public void SeedDatabase(WitchbladesContext context);
+    }
+
+    public class DatabaseInitializer : IDatabaseInitializer
     {
         // URL Сервиса, который обрабатывает запросы на хранение статичных файлов
         const string StaticFilesHostUrl = "https://localhost:5001";
