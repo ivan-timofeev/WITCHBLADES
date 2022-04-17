@@ -5,7 +5,7 @@ namespace Witchblades.Backend.Api.Configuration
 {
     public static partial class ConfigurationExtensions
     {
-        public static void ConfigureSqlDbContext(
+        public static void AddSqlDbContext(
             this IServiceCollection services,
             IConfiguration configuration)
         {

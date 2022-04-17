@@ -29,7 +29,7 @@ namespace Witchblades.Backend.Api.Configuration
             services.AddSwaggerGen();
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-            services.ConfigureSqlDbContext(_configuration);
+            services.AddSqlDbContext(_configuration);
             services.AddAutoMapper(typeof(AutoMappingProfile));
             services.AddScoped<IPagedModelFactory, PagedModelFactory>();
 
@@ -55,7 +55,7 @@ namespace Witchblades.Backend.Api.Configuration
                               .AllowAnyOrigin());
 
             app.UseStaticFiles();
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             // app.UseAuthorization();
 
             app.UseRouting();

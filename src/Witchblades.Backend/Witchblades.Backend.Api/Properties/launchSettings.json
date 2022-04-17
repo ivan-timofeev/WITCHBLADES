@@ -26,6 +26,16 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": false,
+      "environmentVariables": {
+        "ConnectionStrings:WitchbladesContext": "Server=sql1;Database=WitchbladesDB;User Id=sa;Password=938L8vP2B7mFXXr9;"
+      }
     }
   }
 }
