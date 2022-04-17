@@ -42,10 +42,10 @@ namespace Witchblades.Backend.Api.Configuration
             // Configure the HTTP request pipeline.
 
             // Configurating swagger
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDevelopmentTimeFeatures();
-            }
+            //}
 
             // Database preparing
             app.PrepareTheDatabaseContext();

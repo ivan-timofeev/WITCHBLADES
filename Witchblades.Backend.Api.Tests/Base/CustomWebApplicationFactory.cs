@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Linq;
 using Witchblades.Backend.Api.Configuration;
 using Witchblades.Backend.Data;

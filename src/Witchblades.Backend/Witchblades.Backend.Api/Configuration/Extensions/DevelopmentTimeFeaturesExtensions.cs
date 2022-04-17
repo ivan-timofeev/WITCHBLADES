@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
 {
@@ -24,6 +25,12 @@ namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
                             description.GroupName.ToUpperInvariant());
                     }
                 });
+
+                // Redirect from / to /swagger/index.html
+                var option = new RewriteOptions();
+                option.AddRedirect("^$", "swagger");
+
+                app.UseRewriter(option);
             }
         }
     }
