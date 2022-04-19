@@ -5,7 +5,5 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:2500
-    ports:
-      - 2500:2500
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
