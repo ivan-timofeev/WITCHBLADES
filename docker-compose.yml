@@ -21,8 +21,5 @@ services:
       dockerfile: src/Witchblades.Backend/Witchblades.Backend.Api/Dockerfile
     environment:
       ConnectionStrings:WitchbladesContext: "Server=MicrosoftSqlServer;Database=WitchbladesDB;User Id=sa;Password=DatabasePassword123;"
-      ASPNETCORE_URLS: "http://+:2500;"
     depends_on:
       - database
-    ports:
-      - 2500:80
