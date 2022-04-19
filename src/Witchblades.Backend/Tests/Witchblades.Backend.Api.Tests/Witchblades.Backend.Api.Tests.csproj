@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Witchblades.Backend\Witchblades.Backend.Api\Witchblades.Backend.Api.csproj" />
+    <ProjectReference Include="..\..\Witchblades.Backend.Api\Witchblades.Backend.Api.csproj" />
   </ItemGroup>
 
 </Project>

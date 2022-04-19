@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Model",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Data", "src\Witchblades.Backend\Witchblades.Backend.Data\Witchblades.Backend.Data.csproj", "{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Api.Tests", "Witchblades.Backend.Api.Tests\Witchblades.Backend.Api.Tests.csproj", "{B26DA002-D6CA-431B-BFCC-60A31FF385EC}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{89988A03-F0A9-4A98-A284-0EB5A01B38AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Api.Tests", "src\Witchblades.Backend\Tests\Witchblades.Backend.Api.Tests\Witchblades.Backend.Api.Tests.csproj", "{07B210E4-75B0-4313-B6CB-9759268B51C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,20 +39,20 @@ Global
 		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B26DA002-D6CA-431B-BFCC-60A31FF385EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B26DA002-D6CA-431B-BFCC-60A31FF385EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B26DA002-D6CA-431B-BFCC-60A31FF385EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B26DA002-D6CA-431B-BFCC-60A31FF385EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89988A03-F0A9-4A98-A284-0EB5A01B38AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89988A03-F0A9-4A98-A284-0EB5A01B38AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89988A03-F0A9-4A98-A284-0EB5A01B38AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89988A03-F0A9-4A98-A284-0EB5A01B38AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B26DA002-D6CA-431B-BFCC-60A31FF385EC} = {6133F635-2EB4-432B-BAF3-8DED419C19EC}
+		{07B210E4-75B0-4313-B6CB-9759268B51C5} = {6133F635-2EB4-432B-BAF3-8DED419C19EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D152AE82-6AA3-4C62-9A38-373B8B15C5BC}
