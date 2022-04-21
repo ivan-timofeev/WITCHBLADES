@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net;
@@ -64,8 +65,9 @@ namespace Witchblades.Backend.Api.Tests
             return _factory.WithWebHostBuilder(builder => builder.ConfigureServices(t =>
             {
                 var sp = t.BuildServiceProvider();
+                var cfg = sp.GetRequiredService<IConfiguration>();
                 var context = sp.GetRequiredService<WitchbladesContext>();
-                var initializer = new DatabaseInitializer();
+                var initializer = new DatabaseInitializer(cfg);
                 initializer.SeedDatabase(context);
             })).CreateClient();
         }
