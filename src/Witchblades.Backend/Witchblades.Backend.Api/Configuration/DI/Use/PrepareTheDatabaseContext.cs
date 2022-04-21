@@ -2,7 +2,7 @@
 
 namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
 {
-    public static class PrepareTheDatabaseContextExtensions
+    public static class PrepareTheDatabaseContextConfiguration
     {
         /// <summary>
         /// Ensures the context is created <br></br>

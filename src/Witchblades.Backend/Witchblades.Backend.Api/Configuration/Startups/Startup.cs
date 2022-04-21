@@ -29,10 +29,9 @@ namespace Witchblades.Backend.Api.Configuration
             services.AddSwaggerGen();
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-            services.AddSqlDbContext(_configuration);
+            services.AddDatabaseContext(_configuration);
             services.AddAutoMapper(typeof(AutoMappingProfile));
-            services.AddScoped<IPagedModelFactory, PagedModelFactory>();
-
+            services.AddSingleton<IPagedModelFactory, PagedModelFactory>();
             services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
         }
 

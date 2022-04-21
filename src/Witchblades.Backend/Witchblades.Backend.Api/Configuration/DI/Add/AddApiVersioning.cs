@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Witchblades.Backend.Api.Utils.Exceptions;
 
 namespace Witchblades.Backend.Api.Configuration
 {
     public static class VersioningConfiguration
     {
-        public static void AddApiVersioning(this IServiceCollection services, IConfiguration configuration)
+        public static void AddApiVersioning(
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
             ApiVersion? apiVersion = null;
 
@@ -19,8 +22,7 @@ namespace Witchblades.Backend.Api.Configuration
             }
             catch
             {
-                throw new InvalidDataException("Invalid default api version\n" +
-                    "Use {Major:int}.{Minor:int} (example: 1.0)");
+                throw new InvalidConfigurationException("DefaultApiVersion", "1.0");
             }
 
             services.AddApiVersioning(setup =>

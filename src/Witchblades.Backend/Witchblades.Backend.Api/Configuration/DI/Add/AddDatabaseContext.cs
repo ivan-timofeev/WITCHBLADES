@@ -3,9 +3,9 @@ using Witchblades.Backend.Data;
 
 namespace Witchblades.Backend.Api.Configuration
 {
-    public static partial class ConfigurationExtensions
+    public static partial class AddDatabaseContextConfiguration
     {
-        public static void AddSqlDbContext(
+        public static void AddDatabaseContext(
             this IServiceCollection services,
             IConfiguration configuration)
         {

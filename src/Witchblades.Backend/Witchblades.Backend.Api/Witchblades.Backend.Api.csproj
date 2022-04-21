@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Witchblades.Backend.Api.DataContracts\Witchblades.Backend.Api.DataContracts.csproj" />
-    <ProjectReference Include="..\Witchblades.Backend.Data\Witchblades.Backend.Data.csproj" />
     <ProjectReference Include="..\Witchblades.Backend.Model\Witchblades.Backend.Model.csproj" />
   </ItemGroup>
 

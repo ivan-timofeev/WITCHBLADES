@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Api.Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Model", "src\Witchblades.Backend\Witchblades.Backend.Model\Witchblades.Backend.Model.csproj", "{55554C32-B6BF-4589-85E8-A83070C0FCED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Data", "src\Witchblades.Backend\Witchblades.Backend.Data\Witchblades.Backend.Data.csproj", "{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Witchblades.Backend.Api.Tests", "src\Witchblades.Backend\Tests\Witchblades.Backend.Api.Tests\Witchblades.Backend.Api.Tests.csproj", "{07B210E4-75B0-4313-B6CB-9759268B51C5}"
 EndProject
 Global
@@ -33,10 +31,6 @@ Global
 		{55554C32-B6BF-4589-85E8-A83070C0FCED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55554C32-B6BF-4589-85E8-A83070C0FCED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55554C32-B6BF-4589-85E8-A83070C0FCED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56F407C0-191E-45CA-B4CD-7FA0BB3AD6AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07B210E4-75B0-4313-B6CB-9759268B51C5}.Release|Any CPU.ActiveCfg = Release|Any CPU

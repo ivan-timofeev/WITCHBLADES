@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Rewrite;
 
 namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
 {
-    public static class DevelopmentTimeFeaturesExtensions
+    public static class UseDevelopmentTimeFeaturesConfiguration
     {
         /// <summary>
-        /// Add swagger UI
+        /// Adds the swagger UI
         /// </summary>
-        /// <param name="app"></param>
         public static void UseDevelopmentTimeFeatures(this IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
@@ -29,7 +28,6 @@ namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
                 // Redirect from / to /swagger/index.html
                 var option = new RewriteOptions();
                 option.AddRedirect("^$", "swagger");
-
                 app.UseRewriter(option);
             }
         }
