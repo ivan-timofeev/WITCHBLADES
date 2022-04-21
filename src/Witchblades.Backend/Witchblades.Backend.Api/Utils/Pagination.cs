@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Witchblades.Backend.Api.Utils.Attributes;
 
 namespace Witchblades.Backend.Api.Utils
 {
     public class PaginationParameters
     {
-        [Range(1, 100)]
+        [Range(1, 100, ErrorMessage = "The limit should be in the range from {1} to {2}")]
         public int Limit { get; set; } = 10;
-        [Range(1, 50000)]
+        [IsPositiveNumber(ErrorMessage = "The page number must be positive")]
         public int PageNumber { get; set; } = 1;
     }
 
