@@ -1,4 +1,5 @@
-﻿using Witchblades.Backend.Data;
+﻿using Serilog;
+using Witchblades.Backend.Data;
 
 namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
 {
@@ -10,16 +11,25 @@ namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
         /// </summary>
         public static void PrepareTheDatabaseContext(this IApplicationBuilder app)
         {
-            using (var scope = app.ApplicationServices.CreateScope())
+            try
             {
-                var context = scope.ServiceProvider.GetService<WitchbladesContext>();
-                context.Database.EnsureCreated();
-
-                var initializer = app.ApplicationServices.GetService<IDatabaseInitializer>();
-                if (initializer != null)
+                using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    initializer.SeedDatabase(context);
+                    var context = scope.ServiceProvider.GetService<WitchbladesContext>();
+                    context.Database.EnsureCreated();
+
+                    var initializer = app.ApplicationServices.GetService<IDatabaseInitializer>();
+                    if (initializer != null)
+                    {
+                        initializer.SeedDatabase(context);
+                    }
                 }
+            }
+            catch
+            {
+                Log.Logger.Fatal("Application can't connect to the database (auto-restart in 10s)");
+                Thread.Sleep(10000);
+                Environment.Exit(-1);
             }
         }
     }

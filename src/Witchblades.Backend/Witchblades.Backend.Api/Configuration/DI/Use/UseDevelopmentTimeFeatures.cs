@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Rewrite;
+using Serilog;
 
 namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
 {
@@ -29,6 +30,10 @@ namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
                 var option = new RewriteOptions();
                 option.AddRedirect("^$", "swagger");
                 app.UseRewriter(option);
+
+                // Use extended serilog
+                app.UseSerilogRequestLogging(opts =>
+                    opts.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms");
             }
         }
     }
