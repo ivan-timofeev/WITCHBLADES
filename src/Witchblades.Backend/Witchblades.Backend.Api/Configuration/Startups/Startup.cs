@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration;
 using Witchblades.Backend.Api.Utils;
+using Witchblades.Backend.Api.Utils.Middlewares;
 using Witchblades.Backend.Data;
 
 namespace Witchblades.Backend.Api.Configuration
@@ -38,7 +39,7 @@ namespace Witchblades.Backend.Api.Configuration
         // Middlewares
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Configure the HTTP request pipeline.
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             // Configurating swagger
             //if (env.IsDevelopment())
