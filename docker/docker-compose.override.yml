@@ -1,9 +1,28 @@
 version: '3.4'
 
 services:
-  witchblades.backend.api:
+
+  database:
+    container_name: Sql-Server
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:2500
+      SA_PASSWORD: "DatabasePassword123"
+      ACCEPT_EULA: "Y"
+      
+  backend:
+    container_name: Witchblades-API
+    build:
+      dockerfile: src/Witchblades.Backend/Witchblades.Backend.Api/Dockerfile
+      context: ..
+    environment:
+      TZ: Europe/Moscow
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ASPNETCORE_URLS: "http://+:2500"
+      ConnectionStrings:WitchbladesContext: "Server=database;Database=WitchbladesDB;User Id=sa;Password=DatabasePassword123;"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    image: ${DOCKER_REGISTRY-}witchbladesbackendapi
+
+  proxy:
+    container_name: Nginx-Reverse-Proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf

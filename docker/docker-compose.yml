@@ -2,36 +2,20 @@ version: '3.4'
 
 services:
 
-# Database container settings
+# Database container
   database:
-    hostname: "Microsoft-Sql-Server"
-    container_name: "Microsoft-Sql-Server"
     image: "mcr.microsoft.com/mssql/server:2019-latest"
-    environment:
-      SA_PASSWORD: "DatabasePassword123"
-      ACCEPT_EULA: "Y"
 
-# Service container settings
-  witchblades.backend.api:
-    hostname: "Witchblades-API"
-    container_name: "Witchblades-API"
+# Service container
+  backend:
     image: ${DOCKER_REGISTRY-}witchbladesbackendapi
-    build:
-      context: ..
-      dockerfile: src/Witchblades.Backend/Witchblades.Backend.Api/Dockerfile
-    environment:
-      ConnectionStrings:WitchbladesContext: "Server=Microsoft-Sql-Server;Database=WitchbladesDB;User Id=sa;Password=DatabasePassword123;"
     depends_on:
       - database
 
-# Reverse proxy
+# Reverse proxy container
   proxy:
-    hostname: "Nginx-Reverse-Proxy"
-    container_name: "Nginx-Reverse-Proxy"
     image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
     depends_on:
-      - witchblades.backend.api
+      - backend
