@@ -17,7 +17,7 @@ services:
     container_name: "Witchblades-API"
     image: ${DOCKER_REGISTRY-}witchbladesbackendapi
     build:
-      context: .
+      context: ..
       dockerfile: src/Witchblades.Backend/Witchblades.Backend.Api/Dockerfile
     environment:
       ConnectionStrings:WitchbladesContext: "Server=Microsoft-Sql-Server;Database=WitchbladesDB;User Id=sa;Password=DatabasePassword123;"
