@@ -14,7 +14,7 @@ export default class ArtistsContainer extends Component {
         var result;
         
         try {
-            result = await fetch("https://localhost:5001/api/Artists");
+            result = await fetch("http://witchblades.com/api/v1/Artists?limit=20&page=1");
         } catch (ex) {
             result = { status: -1, message: ex }
             console.log(ex);
@@ -22,8 +22,8 @@ export default class ArtistsContainer extends Component {
 
         if (result.status === 200) {
             let data = await result.json();
-            console.log(data);
-            let artists = data.map((artist) => 
+            
+            let artists = data.elements.map((artist) => 
                 <div className="collection-item">
                     <ArtistCard artistId={artist.id}
                                 artistName={artist.artistName}

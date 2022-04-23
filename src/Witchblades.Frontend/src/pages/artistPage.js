@@ -3,10 +3,8 @@ import { useParams} from 'react-router-dom';
 import "../styles/artistpage.css";
 
 const state = {
-    artist: {
-        artistName: "Artist Name",
-        artistImage: "Artist Image URL"
-    },
+    artistName: "Artist Name",
+    artistImage: "Artist Image URL",
     albums: [{
         id: 1,
         albumName: "",
@@ -21,19 +19,17 @@ const state = {
 }
 
 const ArtistPage = (props) => {
-    const [data, setData] = useState({ aritst: { artistName: "string", artistImage: "string" } });
+    const [data, setData] = useState({ artistName: "TEST"  });
     const { id } = useParams();
 
     useEffect(() => {
         async function fetchData() {
-            var result = await fetch(`https://localhost:5001/api/Tracks/GetTracksOfArtist/${id}`);
+            var result = await fetch(`http://witchblades.com/api/v1/Artists/${id}`);
             var data = await result.json();
-            console.log(data);
+            
             setData(data);
         };
         fetchData();
-
-        
     }, [id]);
 
     let test = data?.albums?.map(album => (
@@ -54,7 +50,7 @@ const ArtistPage = (props) => {
                         <div className="ArtistPage_table_columnId">{track?.inAlbumNumber}</div>
                         <div className="ArtistPage_table_column">{track?.trackName}</div>
                         <div className="ArtistPage_table_column">{track?.duration}</div>
-                        <div className="ArtistPage_table_column">{track?.trackArtists?.map(artist => <span class="ArtistPage_artist">{artist.artistName}</span>)}</div>
+                        <div className="ArtistPage_table_column">{track?.collaboration?.map(artist => <span class="ArtistPage_artist">{artist.artistName}</span>)}</div>
                     </div>
                 ))
             }
@@ -63,7 +59,7 @@ const ArtistPage = (props) => {
     ));
 
     let style={ 
-        backgroundImage: `url(${data.artist?.artistImage})`,
+        backgroundImage: `url(${data.artistImage})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat'
@@ -73,7 +69,7 @@ const ArtistPage = (props) => {
         <div className="ArtistPage_flex">
             <div className="ArtistPage_artist-info">
                 <div className="ArtistPage_artist-image" style={style}></div>
-                <div className="ArtistPage_artist-name">{data.artist?.artistName}</div>
+                <div className="ArtistPage_artist-name">{data.artistName}</div>
             </div>
             <div className="ArtistPage_popular">
                 <h1>Популярные треки</h1>
@@ -84,7 +80,7 @@ const ArtistPage = (props) => {
                             <div className="ArtistPage_table_columnId"></div>
                             <div className="ArtistPage_table_column"><b>Название</b></div>
                             <div className="ArtistPage_table_column"><b>Длительность</b></div>
-                            <div className="ArtistPage_table_column"><b>Исполнители</b></div>
+                            <div className="ArtistPage_table_column"><b>На фите</b></div>
                         </div>
                         {test}
                     </div>

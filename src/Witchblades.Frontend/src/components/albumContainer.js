@@ -6,14 +6,14 @@ export default class AlbumContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { albums: <div>Nothing loaded</div> }
+        this.state = { albums: <div>generateTamplates()</div> }
     }
 
     async componentDidMount() {
         var result;
         
         try {
-            result = await fetch("https://localhost:5001/api/Albums");
+            result = await fetch("http://witchblades.com/api/v1/Albums?limit=20&page=1");
         } catch (ex) {
             result = { status: -1, message: ex };
             console.log(ex);
@@ -21,8 +21,8 @@ export default class AlbumContainer extends Component {
 
         if (result.status === 200) {
             let data = await result.json();
-            console.log(data);
-            let albums = data.map((album) => 
+            
+            let albums = data.elements.map((album) => 
                 <div className="collection-item">
                     <AlbumCard albumName={album.albumName}
                                albumImage={album.albumImage}

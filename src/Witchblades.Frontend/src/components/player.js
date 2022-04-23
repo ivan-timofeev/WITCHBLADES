@@ -5,8 +5,8 @@ const Player = () => {
     const track = {
         title: "мои друзья не должны умирать",
         artist: "aikko",
-        audioSrc: "https://localhost:5001/music/15.mp3",
-        image: "https://localhost:5001/images/albums/1.png",
+        audioSrc: "http://witchblades.com/music/15.mp3",
+        image: "http://witchblades.com/images/albums/1.png",
         color: "black",
       };
 
@@ -58,23 +58,23 @@ const Player = () => {
     }
 
     let buttonImg = isPlaying
-        ? "https://localhost:5001/images/pause-button.png"
-        : "https://localhost:5001/images/play-button.png";
+        ? "http://witchblades.com/images/pause-button.png"
+        : "http://witchblades.com/images/play-button.png";
 
       return (
         <div className="audio-player-container">
             <div className="audio-player">
                 <div className="audio-player-left">
                     <div className="audio-player-sound">
-                        <img className="audio-player-volume-icon" src="https://localhost:5001/images/sound.svg"></img>
+                        <img className="audio-player-volume-icon" src="http://witchblades.com/images/sound.svg"></img>
                         <div className="audio-player-volume">
                             <input type="range" min="0" value={volume} onChange={event => setVolume(event.target.value)} step="0.01" max="1"></input>
                         </div>
                     </div>
                     <div className="audio-player-buttons">
-                        <img width="33px" className="click" src="https://localhost:5001/images/rewind.svg"></img>
+                        <img width="33px" className="click" src="http://witchblades.com/images/rewind.svg"></img>
                         <img width="40px" className="click click-center" src={buttonImg} onClick={onPlayPause}></img>
-                        <img width="33px" className="click rewind" src="https://localhost:5001/images/rewind.svg"></img>
+                        <img width="33px" className="click rewind" src="http://witchblades.com/images/rewind.svg"></img>
                     </div>
                 </div>
                 <div className="audio-player-right">
