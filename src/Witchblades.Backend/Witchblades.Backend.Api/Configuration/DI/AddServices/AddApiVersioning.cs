@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Witchblades.Backend.Api.Utils.Exceptions;
+using Witchblades.Exceptions;
 
 namespace Witchblades.Backend.Api.Configuration
 {
@@ -13,7 +13,7 @@ namespace Witchblades.Backend.Api.Configuration
 
             try
             {
-                var version = configuration["DefaultApiVersion"];
+                var version = configuration.GetValue<string>("DefaultApiVersion");
 
                 int major = int.Parse(version.Split('.')[0]);
                 int minor = int.Parse(version.Split('.')[1]);

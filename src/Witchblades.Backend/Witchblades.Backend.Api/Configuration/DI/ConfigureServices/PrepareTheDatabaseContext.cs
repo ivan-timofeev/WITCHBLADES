@@ -15,21 +15,19 @@ namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var context = scope.ServiceProvider.GetService<WitchbladesContext>();
+                    var context = scope.ServiceProvider.GetRequiredService<WitchbladesContext>();
                     context.Database.EnsureCreated();
 
-                    var initializer = app.ApplicationServices.GetService<IDatabaseInitializer>();
+                    var initializer = scope.ServiceProvider.GetService<IDatabaseInitializer>();
                     if (initializer != null)
                     {
-                        initializer.SeedDatabase(context);
+                        initializer.SeedDatabase();
                     }
                 }
             }
             catch
             {
-                Log.Logger.Fatal("Application can't connect to the database (auto-restart in 10s)");
-                Thread.Sleep(10000);
-                Environment.Exit(-1);
+                Log.Logger.Fatal("An error occurred while preparing the database context");
             }
         }
     }

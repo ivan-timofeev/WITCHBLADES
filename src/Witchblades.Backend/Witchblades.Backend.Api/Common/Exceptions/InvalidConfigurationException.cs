@@ -1,4 +1,4 @@
-﻿namespace Witchblades.Backend.Api.Utils.Exceptions
+﻿namespace Witchblades.Exceptions
 {
     public class InvalidConfigurationException : Exception
     {

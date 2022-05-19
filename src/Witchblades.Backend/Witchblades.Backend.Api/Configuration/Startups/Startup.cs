@@ -3,6 +3,7 @@ using Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration;
 using Witchblades.Backend.Api.Utils;
 using Witchblades.Backend.Api.Utils.Middlewares;
 using Witchblades.Backend.Data;
+using Witchblades.Logic.Interfaces;
 
 namespace Witchblades.Backend.Api.Configuration
 {
@@ -31,9 +32,9 @@ namespace Witchblades.Backend.Api.Configuration
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             services.AddDatabaseContext(_configuration);
+            services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
             services.AddAutoMapper(typeof(AutoMappingProfile));
             services.AddSingleton<IPagedModelFactory, PagedModelFactory>();
-            services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
         }
 
         // Middlewares

@@ -1,35 +1,51 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Witchblades.Backend.Api.Utils.Exceptions;
 using Witchblades.Backend.Models;
+using Witchblades.Exceptions;
+using Witchblades.Logic.Interfaces;
 
 namespace Witchblades.Backend.Data
 {
-    public interface IDatabaseInitializer
-    {
-        public void SeedDatabase(WitchbladesContext context);
-    }
-
     public class DatabaseInitializer : IDatabaseInitializer
     {
-        // URL Сервиса, который обрабатывает запросы на хранение статичных файлов
+        #region Private fields
+        private readonly ILogger<DatabaseInitializer> _logger;
+        private readonly WitchbladesContext _context;
         private readonly string _staticFilesHostUrl;
+        #endregion
 
-        public DatabaseInitializer(IConfiguration configuration)
+        #region Constructors
+        public DatabaseInitializer(
+            ILogger<DatabaseInitializer> logger,
+            WitchbladesContext context,
+            IConfiguration configuration
+            )
         {
-            string staticFilesHostUrl = configuration["StaticFilesHostUrl"];
-
-            _staticFilesHostUrl = staticFilesHostUrl != null
-                ? staticFilesHostUrl
-                : throw new MissingConfigurationException("StaticFilesHostUrl");
+            _logger = logger;
+            _context = context;
+            _staticFilesHostUrl = configuration.GetValue<string>("StaticFilesHostUrl")
+                ?? throw new MissingConfigurationException("StaticFilesHostUrl");
         }
+        #endregion
 
 
         #region Seed the database
-        public void SeedDatabase(WitchbladesContext context)
+        public void SeedDatabase()
         {
-            SeedArtists(context);
-            SeedAlbums(context);
-            SeedTracks(context);
+            _logger.LogInformation("Seeding database...");
+
+            try
+            {
+                SeedArtists(_context);
+                SeedAlbums(_context);
+                SeedTracks(_context);
+
+                _logger.LogInformation("Database seeded successfully");
+            }
+            catch (Exception x)
+            {
+                _logger.LogError("An error occurred while database seeding", x);
+                throw new SeedDatabaseException(x);
+            }
         }
         #endregion
 
