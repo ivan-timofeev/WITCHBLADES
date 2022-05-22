@@ -1,5 +1,7 @@
 ﻿using Serilog;
 using Witchblades.Backend.Data;
+using Witchblades.Exceptions;
+using Witchblades.Logic.Interfaces;
 
 namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
 {
@@ -25,9 +27,10 @@ namespace Witchblades.Backend.Api.Configuration.ServiceCollectionConfiguration
                     }
                 }
             }
-            catch
+            catch (Exception x)
             {
-                Log.Logger.Fatal("An error occurred while preparing the database context");
+                Log.Logger.Fatal("An error occurred while preparing the database context", x);
+                throw new PrepareTheDatabaseContextException(x);
             }
         }
     }
